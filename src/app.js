@@ -38,13 +38,21 @@ app.listen(PORT, () => {
 app.use("/api/v1", router);
 
 app.use("/api", (req, res) => {
-  res.status(404).json();
+  res.status(404).json({ message: "please, specify an API version." });
 });
 
 app.use("/api/v1", (req, res) => {
-  res.status(404).json();
+  res.status(404).json({ message: "please, specify a valid endpoint." });
 });
 
 app.use((req, res) => {
-  res.status(404).json("404 Not Found");
+  res
+    .status(404)
+    .json({
+      name: "GraySwipe RESTful API",
+      version: "1.0.0",
+      status: "200: OK",
+      health: "RUNNING",
+      mode: "STAGING",
+    });
 });
