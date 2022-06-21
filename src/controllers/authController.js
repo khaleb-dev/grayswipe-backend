@@ -22,10 +22,10 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { full_name, email, password } = req.body;
+  const { full_name, email, phone_no, password } = req.body;
 
   try {
-    const user = await User.create({ full_name, email, password });
+    const user = await User.create({ full_name, email, phone_no, password });
 
     const token = createToken(user._id);
 
