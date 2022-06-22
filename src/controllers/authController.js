@@ -69,7 +69,7 @@ const requestPasswordReset = async (req, res) => {
 const setNewPassword = async (req, res) => {
   const { pin, new_password } = req.body;
   try {
-    const user = await User.updatePassword({ token: pin, new_password });
+    const user = await User.updatePassword(pin, new_password);
 
     res.status(200).json({ status: "success" });
   } catch (err) {
