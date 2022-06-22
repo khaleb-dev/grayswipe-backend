@@ -14,7 +14,7 @@ const handleErrors = (err) => {
   }
 
   if (err.message === "invalid token") {
-    return (errors.emailOrPhoneNumber = "Token does not exist.");
+    return (errors.emailOrPhoneNumber = "Pin does not exist.");
   }
 
   if (err.message === "invalid query") {

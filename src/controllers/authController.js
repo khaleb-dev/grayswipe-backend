@@ -54,7 +54,7 @@ const requestPasswordReset = async (req, res) => {
     const mailOptions = {
       to: updatedUser.email,
       subject: "Reset Password",
-      html: `<h3>Your reset token is: ${updatedUser.password_reset_token}</h3>`,
+      html: `<h3>Your password reset pin is: ${updatedUser.password_reset_token}</h3>`,
     };
 
     const mailsender = mail(mailOptions);
@@ -67,9 +67,9 @@ const requestPasswordReset = async (req, res) => {
 };
 
 const setNewPassword = async (req, res) => {
-  const { token, new_password } = req.body;
+  const { pin, new_password } = req.body;
   try {
-    const user = await User.updatePassword(token, new_password);
+    const user = await User.updatePassword({ token: pin, new_password });
 
     res.status(200).json({ status: "success" });
   } catch (err) {
