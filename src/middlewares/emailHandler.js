@@ -1,11 +1,15 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  port: 25,
-  host: "localhost",
-  tls: {
-    rejectUnauthorized: false,
+  port: process.env.MAIL_PORT,
+  host: process.env.MAIL_HOST,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
   },
+  // tls: {
+  //   rejectUnauthorized: false,
+  // },
 });
 
 const mail = (mailOptions) => {
