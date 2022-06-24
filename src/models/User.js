@@ -27,6 +27,21 @@ const userSchema = new mongoose.Schema(
     password_reset_token: {
       type: String,
     },
+    display_name: {
+      type: String,
+    },
+    age: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    profile_photo: {
+      type: String,
+    },
   },
   {
     timestamps: {
