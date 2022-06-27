@@ -31,6 +31,17 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
+  if(obj.user){
+    delete obj.user.password;
+    delete obj.user.auth_token;
+    delete obj.user.password_reset_token;
+    delete obj.user.created_at;
+    delete obj.user.updated_at;
+    delete obj.user.__v;
+  }
+  if(obj.salon){
+    delete obj.salon.__v;
+  }
   return obj;
 };
 

@@ -84,6 +84,10 @@ userSchema.statics.updatePassword = async function (token, new_password) {
   throw Error("invalid token");
 };
 
+userSchema.statics.currentUser = async function (id) {
+  return await this.findOne({ _id: id });
+};
+
 userSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.password;
