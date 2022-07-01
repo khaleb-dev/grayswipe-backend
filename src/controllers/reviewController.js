@@ -32,7 +32,10 @@ const updateReview = async (req, res) => {
 
 const deleteReview = async (req, res) => {
   try {
-    res.status(200).json({ status: "success" });
+    const review = await Review.deleteOne({ _id: req.params.reviewId })
+    if (review) {
+      res.status(200).json({ status: "success" });
+    }
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
