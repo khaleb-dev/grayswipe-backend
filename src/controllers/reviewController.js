@@ -5,7 +5,6 @@ const randomId = require("random-id");
 
 const createReview = async (req, res) => {
   const { salon_id, ratings, details } = req.body;
-
   try {
     let user = await User.currentUser(res.locals.user);
     let salon = await Salon.findOne({ _id: salon_id });
@@ -20,10 +19,17 @@ const createReview = async (req, res) => {
 };
 
 const updateReview = async (req, res) => {
-  const { email } = req.body;
-
+  const { ratings, details } = req.body;
   try {
-    res.status(200).json();
+    const review = await Review.findOneAndUpdate(
+      { _id: req.params.reviewId },
+      { $set: { ratings, details } },
+      { new: true }
+    );
+    if (review) {
+      res.status(200).json( review );
+    }
+    res.status(400).json({ error: "Review not found" });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
