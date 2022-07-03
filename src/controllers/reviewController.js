@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Review = require("../models/Review");
+const Salon = require("../models/Salon");
 const { handleErrors } = require("../middlewares/errorHandler");
-const randomId = require("random-id");
 
 const createReview = async (req, res) => {
   const { salon_id, ratings, details } = req.body;
