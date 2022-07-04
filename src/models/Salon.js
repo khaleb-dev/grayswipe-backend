@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const salonSchema = new mongoose.Schema(
   {
+    owner: {
+      type: ObjectId,
+      ref: 'users'
+    },
     name: {
       type: String,
     },
@@ -47,6 +51,14 @@ const salonSchema = new mongoose.Schema(
 salonSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
+  if(obj.owner){
+    delete obj.owner.password;
+    delete obj.owner.auth_token;
+    delete obj.owner.password_reset_token;
+    delete obj.owner.created_at;
+    delete obj.owner.updated_at;
+    delete obj.owner.__v;
+  }
   return obj;
 };
 

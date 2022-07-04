@@ -24,6 +24,11 @@ router.post("/register", register);
 router.post("/request-reset", requestPasswordReset);
 router.post("/reset-password", setNewPassword);
 
+// salon
+router.post("/salon", requiresAuth, createReview);
+router.patch("/salon/:salonId", requiresAuth, updateReview);
+router.get("/salon/:reviewId", fetchOneReview);
+router.get("/salons", fetchAllReviews);
 
 // review
 router.post("/review", requiresAuth, createReview);
@@ -31,7 +36,7 @@ router.patch("/review/:reviewId", requiresAuth, updateReview);
 router.delete("/review/:reviewId", requiresAuth, deleteReview);
 router.get("/review/:reviewId", fetchOneReview);
 router.get("/reviews", fetchAllReviews);
-router.get("/reviews/user/:userId", fetchAllReviewsByUser);
+router.get("/reviews/user/:userId", requiresAuth, fetchAllReviewsByUser);
 router.get("/reviews/salon/:salonId", fetchAllReviewsBySalon);
 
 module.exports = router;

@@ -11,7 +11,7 @@ const createReview = async (req, res) => {
 
     const review = await Review.create({ user, salon, ratings, details });
 
-    res.status(201).json({ review });
+    res.status(201).json( review );
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
