@@ -25,7 +25,7 @@ const updateReview = async (req, res) => {
       { _id: req.params.reviewId },
       { $set: { ratings, details } },
       { new: true }
-    );
+    ).populate("user").populate("salon");
     if (review) {
       return res.status(200).json( review );
     }
@@ -50,7 +50,7 @@ const deleteReview = async (req, res) => {
 
 const fetchOneReview = async (req, res) => {
   try {
-    const review = await Review.findOne({ _id: req.params.reviewId }); 
+    const review = await Review.findOne({ _id: req.params.reviewId }).populate("user").populate("salon"); 
     res.status(200).json( review );
   } catch (err) {
     const error = handleErrors(err);
@@ -60,7 +60,7 @@ const fetchOneReview = async (req, res) => {
 
 const fetchAllReviews = async (req, res) => {
   try {
-    const reviews = await Review.find({});
+    const reviews = await Review.find({}).populate("user").populate("salon");
     res.status(200).json( reviews );
   } catch (err) {
     const error = handleErrors(err);
@@ -70,8 +70,9 @@ const fetchAllReviews = async (req, res) => {
 
 const fetchAllReviewsByUser = async (req, res) => {
   try {
-    const reviews = await Review.find({ user: req.params.userId }); 
-    res.status(200).json( reviews );
+    const user = await User.findOne({ _id: req.params.userId });
+    const reviews = await Review.find({ user: req.params.userId }).populate("salon"); 
+    res.status(200).json({ user, reviews });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error: "Reviews not found" });
@@ -80,8 +81,9 @@ const fetchAllReviewsByUser = async (req, res) => {
 
 const fetchAllReviewsBySalon = async (req, res) => {
   try {
-    const reviews = await Review.find({ salon: req.params.salonId });
-    res.status(200).json( reviews );
+    const salon = await Salon.findOne({ _id: req.params.salonId }).populate("owner");
+    const reviews = await Review.find({ salon: req.params.salonId }).populate("user");
+    res.status(200).json({ salon, reviews });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error: "Reviews not found" });

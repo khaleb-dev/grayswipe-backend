@@ -74,7 +74,7 @@ const updateSalon = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate("owner");
     if (salon) {
       return res.status(200).json(salon);
     }
@@ -97,17 +97,7 @@ const fetchOneSalon = async (req, res) => {
 
 const fetchAllSalons = async (req, res) => {
   try {
-    const salons = await Salon.aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "owner",
-          foreignField: "_id",
-          as: "owner",
-        },
-      },
-      { $unwind: "$owner" },
-    ]);
+    const salons = await Salon.find({}).populate("owner");
     res.status(200).json(salons);
   } catch (err) {
     const error = handleErrors(err);
