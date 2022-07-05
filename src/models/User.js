@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     email: {
-      type: String, 
+      type: String,
       required: [true, "Email is required."],
       unique: [true, "Email already used by another user"],
       validate: [isEmail, "Please enter a valid email."],
@@ -21,8 +21,9 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required."],
       minlength: [8, "Password cannot be less than 8 characters."],
     },
-    auth_token: { // for third party auth
-      type: String
+    auth_token: {
+      // for third party auth
+      type: String,
     },
     password_reset_token: {
       type: String,
@@ -58,7 +59,9 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.statics.login = async function (emailOrPhoneNumber, password) {
-  const user = await this.findOne({ $or: [ { email: emailOrPhoneNumber }, { phone_no: emailOrPhoneNumber } ] });
+  const user = await this.findOne({
+    $or: [{ email: emailOrPhoneNumber }, { phone_no: emailOrPhoneNumber }],
+  });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {

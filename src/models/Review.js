@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema.Types
+const { ObjectId } = mongoose.Schema.Types;
 
 const reviewSchema = new mongoose.Schema(
   {
     user: {
       type: ObjectId,
-      ref: 'users'
+      ref: "users",
     },
     salon: {
       type: ObjectId,
-      ref: 'salon'
+      ref: "salon",
     },
     ratings: {
       type: String,
@@ -17,8 +17,8 @@ const reviewSchema = new mongoose.Schema(
     details: {
       type: String,
       required: [true, "Details is required."],
-      minlength: [3, "Details cannot be less than 3 characters."]
-    }
+      minlength: [3, "Details cannot be less than 3 characters."],
+    },
   },
   {
     timestamps: {
@@ -31,7 +31,7 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
-  if(obj.user){
+  if (obj.user) {
     delete obj.user.password;
     delete obj.user.auth_token;
     delete obj.user.password_reset_token;
@@ -39,7 +39,7 @@ reviewSchema.methods.toJSON = function () {
     delete obj.user.updated_at;
     delete obj.user.__v;
   }
-  if(obj.salon){
+  if (obj.salon) {
     delete obj.salon.__v;
   }
   return obj;
