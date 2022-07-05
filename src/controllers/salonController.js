@@ -20,7 +20,7 @@ const createSalon = async (req, res) => {
     let user = await User.currentUser(res.locals.user);
 
     const salon = await Salon.create({
-      user,
+      owner: user,
       name,
       category,
       details,
@@ -87,7 +87,7 @@ const updateSalon = async (req, res) => {
 
 const fetchOneSalon = async (req, res) => {
   try {
-    const salon = await Salon.findOne({ _id: req.params.salonId });
+    const salon = await Salon.findOne({ _id: req.params.salonId }).populate("owner");
     res.status(200).json(salon);
   } catch (err) {
     const error = handleErrors(err);
@@ -97,7 +97,17 @@ const fetchOneSalon = async (req, res) => {
 
 const fetchAllSalons = async (req, res) => {
   try {
-    const salons = await Salon.find({});
+    const salons = await Salon.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      { $unwind: "$owner" },
+    ]);
     res.status(200).json(salons);
   } catch (err) {
     const error = handleErrors(err);
