@@ -6,6 +6,7 @@ const {
   setNewPassword,
   requiresAuth,
 } = require("../controllers/authController");
+const { createSalon, fetchOneSalon, fetchAllSalons } = require("../controllers/salonController");
 const {
   createReview,
   updateReview,
@@ -13,7 +14,7 @@ const {
   fetchOneReview,
   fetchAllReviews,
   fetchAllReviewsByUser,
-  fetchAllReviewsBySalon
+  fetchAllReviewsBySalon,
 } = require("../controllers/reviewController");
 
 const router = Router();
@@ -25,10 +26,10 @@ router.post("/request-reset", requestPasswordReset);
 router.post("/reset-password", setNewPassword);
 
 // salon
-router.post("/salon", requiresAuth, createReview);
+router.post("/salon", requiresAuth, createSalon);
 router.patch("/salon/:salonId", requiresAuth, updateReview);
-router.get("/salon/:reviewId", fetchOneReview);
-router.get("/salons", fetchAllReviews);
+router.get("/salon/:salonId", fetchOneSalon);
+router.get("/salons", fetchAllSalons);
 
 // review
 router.post("/review", requiresAuth, createReview);
