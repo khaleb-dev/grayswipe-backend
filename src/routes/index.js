@@ -41,7 +41,7 @@ router.post("/review", requiresAuth, createReview);
 router.patch("/review/:reviewId", requiresAuth, updateReview);
 router.delete("/review/:reviewId", requiresAuth, deleteReview);
 router.get("/review/:reviewId", fetchOneReview);
-router.get("/reviews", fetchAllReviews);
+router.get("/reviews", requiresAuth, fetchAllReviews);
 router.get("/reviews/user/:userId", requiresAuth, fetchAllReviewsByUser);
 router.get("/reviews/salon/:salonId", fetchAllReviewsBySalon);
 

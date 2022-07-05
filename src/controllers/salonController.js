@@ -91,7 +91,7 @@ const fetchOneSalon = async (req, res) => {
     res.status(200).json(salon);
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "Salon not found" });
   }
 };
 
@@ -101,7 +101,7 @@ const fetchAllSalons = async (req, res) => {
     res.status(200).json(salons);
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "Salons not found" });
   }
 };
 

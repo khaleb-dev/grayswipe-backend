@@ -44,7 +44,7 @@ const deleteReview = async (req, res) => {
     }
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "An error occured" });
   }
 };
 
@@ -54,7 +54,7 @@ const fetchOneReview = async (req, res) => {
     res.status(200).json( review );
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "Review not found" });
   }
 };
 
@@ -64,7 +64,7 @@ const fetchAllReviews = async (req, res) => {
     res.status(200).json( reviews );
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "Reviews not found" });
   }
 };
 
@@ -74,17 +74,17 @@ const fetchAllReviewsByUser = async (req, res) => {
     res.status(200).json( reviews );
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "Reviews not found" });
   }
 };
 
 const fetchAllReviewsBySalon = async (req, res) => {
   try {
-    const reviews = await Review.find({ salon: req.params.salonId }); 
+    const reviews = await Review.find({ salon: req.params.salonId });
     res.status(200).json( reviews );
   } catch (err) {
     const error = handleErrors(err);
-    res.status(400).json({ error });
+    res.status(400).json({ error: "Reviews not found" });
   }
 };
 
