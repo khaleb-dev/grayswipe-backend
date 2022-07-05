@@ -6,7 +6,12 @@ const {
   setNewPassword,
   requiresAuth,
 } = require("../controllers/authController");
-const { createSalon, fetchOneSalon, fetchAllSalons } = require("../controllers/salonController");
+const {
+  createSalon,
+  updateSalon,
+  fetchOneSalon,
+  fetchAllSalons,
+} = require("../controllers/salonController");
 const {
   createReview,
   updateReview,
@@ -27,7 +32,7 @@ router.post("/reset-password", setNewPassword);
 
 // salon
 router.post("/salon", requiresAuth, createSalon);
-router.patch("/salon/:salonId", requiresAuth, updateReview);
+router.patch("/salon/:salonId", requiresAuth, updateSalon);
 router.get("/salon/:salonId", fetchOneSalon);
 router.get("/salons", fetchAllSalons);
 

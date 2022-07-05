@@ -27,7 +27,7 @@ const updateReview = async (req, res) => {
       { new: true }
     );
     if (review) {
-      res.status(200).json( review );
+      return res.status(200).json( review );
     }
     res.status(400).json({ error: "Review not found" });
   } catch (err) {
@@ -50,7 +50,7 @@ const deleteReview = async (req, res) => {
 
 const fetchOneReview = async (req, res) => {
   try {
-    const review = await Review.find({ _id: req.params.reviewId }); 
+    const review = await Review.findOne({ _id: req.params.reviewId }); 
     res.status(200).json( review );
   } catch (err) {
     const error = handleErrors(err);
