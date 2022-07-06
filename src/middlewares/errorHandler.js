@@ -2,7 +2,7 @@ const handleErrors = (err) => {
   let errors = {};
   console.log(err.message, err.code);
   if (err.code === 11000) {
-    errors.emailOrPhoneNumber = "Duplicate email.";
+    errors.email = "Duplicate email.";
   }
 
   if (err.message === "invalid credentials") {

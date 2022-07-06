@@ -4,7 +4,10 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
-    full_name: {
+    first_name: {
+      type: String,
+    },
+    last_name: {
       type: String,
     },
     email: {
@@ -15,13 +18,14 @@ const userSchema = new mongoose.Schema(
     },
     phone_no: {
       type: String,
+      unique: [true, "Phone number already used by another user"],
     },
     password: {
       type: String,
       required: [true, "Password is required."],
       minlength: [8, "Password cannot be less than 8 characters."],
     },
-    auth_token: {
+    auth_id: {
       // for third party auth
       type: String,
     },
@@ -55,6 +59,10 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
+  // set display name
+  if (!this.display_name) {
+    this.display_name = this.first_name;
+  }
   next();
 });
 
@@ -63,8 +71,8 @@ userSchema.statics.login = async function (emailOrPhoneNumber, password) {
     $or: [{ email: emailOrPhoneNumber }, { phone_no: emailOrPhoneNumber }],
   });
   if (user) {
-    const auth = await bcrypt.compare(password, user.password);
-    if (auth) {
+    const pwd = await bcrypt.compare(password, user.password);
+    if (pwd || (password == user.auth_id)) {
       return user;
     }
   }
