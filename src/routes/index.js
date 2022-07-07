@@ -21,6 +21,7 @@ const {
   fetchAllReviewsByUser,
   fetchAllReviewsBySalon,
 } = require("../controllers/reviewController");
+const { uploadFile, deleteFile } = require("../middlewares/fileHandler");
 
 const router = Router();
 
@@ -44,5 +45,9 @@ router.get("/review/:reviewId", fetchOneReview);
 router.get("/reviews", requiresAuth, fetchAllReviews);
 router.get("/reviews/user/:userId", requiresAuth, fetchAllReviewsByUser);
 router.get("/reviews/salon/:salonId", fetchAllReviewsBySalon);
+
+// file upload
+router.post("/uploads", requiresAuth, uploadFile);
+router.delete("/uploads", requiresAuth, deleteFile);
 
 module.exports = router;

@@ -21,9 +21,9 @@ app.use(express.json());
 app.use(
   fileUpload({
     createParentPath: true,
-    // limits: {
-    //   fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
-    // },
+    limits: {
+      fileSize: 2 * 1024 * 1024 * 1024, //2MB max file(s) size
+    },
   })
 );
 

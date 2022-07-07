@@ -27,7 +27,7 @@ const register = async (req, res) => {
   try {
     const user = await User.create({ first_name, last_name, email, phone_no, password, profile_photo, auth_id });
 
-    const token = createToken(user._id);
+    const token = createToken({ id: user._id });
 
     res.status(201).json({ user, token });
   } catch (err) {
