@@ -21,9 +21,13 @@ const handleErrors = (err) => {
     return "Invalid Query Parameter.";
   }
 
-  if (err.message.includes("user validation failed")) {
-    Object.values(err.errors).forEach(({ properties }) => {
-      Object.assign(errors[properties.path], properties.message);
+  if (err.message === "invalid passkey") {
+    return "Password or Auth ID is required.";
+  }
+
+  if (err.message.includes("users validation failed")) {
+    Object.values(err.errors).forEach(( properties ) => {
+      errors[properties.path] = properties.message;
     });
   }
 

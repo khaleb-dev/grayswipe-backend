@@ -21,9 +21,7 @@ const userSchema = new mongoose.Schema(
       unique: [true, "Phone number already used by another user"],
     },
     password: {
-      type: String,
-      required: [true, "Password is required."],
-      minlength: [8, "Password cannot be less than 8 characters."],
+      type: String
     },
     auth_id: {
       // for third party auth
@@ -57,13 +55,22 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  // set display name
-  if (!this.display_name) {
-    this.display_name = this.first_name;
+  if (this.password || this.auth_id) {
+    const salt = await bcrypt.genSalt();
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, salt);
+    }
+    if (this.auth_id) {
+      this.auth_id = await bcrypt.hash(this.auth_id, salt);
+    }
+    // set display name
+    if (!this.display_name) {
+      this.display_name = this.first_name;
+    }
+    next();
   }
-  next();
+
+  throw Error("invalid passkey");
 });
 
 userSchema.statics.login = async function (emailOrPhoneNumber, password) {
@@ -71,8 +78,9 @@ userSchema.statics.login = async function (emailOrPhoneNumber, password) {
     $or: [{ email: emailOrPhoneNumber }, { phone_no: emailOrPhoneNumber }],
   });
   if (user) {
-    const pwd = await bcrypt.compare(password, user.password);
-    if (pwd || (password == user.auth_id)) {
+    let pwd = await bcrypt.compare(password, user.password);
+    let aid = await bcrypt.compare(password, user.auth_id);
+    if (pwd || aid) {
       return user;
     }
   }
@@ -102,7 +110,7 @@ userSchema.statics.currentUser = async function (id) {
 userSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.password;
-  delete obj.auth_token;
+  delete obj.auth_id;
   delete obj.password_reset_token;
   delete obj.__v;
   return obj;
