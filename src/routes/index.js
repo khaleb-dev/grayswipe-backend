@@ -22,6 +22,7 @@ const {
   fetchAllReviewsBySalon,
 } = require("../controllers/reviewController");
 const { uploadFile, deleteFile } = require("../middlewares/fileHandler");
+const { changePassword } = require("../controllers/userController");
 
 const router = Router();
 
@@ -49,5 +50,8 @@ router.get("/reviews/salon/:salonId", fetchAllReviewsBySalon);
 // file upload
 router.post("/uploads", requiresAuth, uploadFile);
 router.delete("/uploads", requiresAuth, deleteFile);
+
+// user profile
+router.patch("/change-password", requiresAuth, changePassword);
 
 module.exports = router;

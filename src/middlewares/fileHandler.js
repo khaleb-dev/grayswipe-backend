@@ -12,7 +12,6 @@ const uploadFile = (req, res) => {
       });
     } else {
       let data = [];
-      console.log(req.files.files);
       if (Array.isArray(req.files.files)) {
         // multiple file upload
         _.forEach(_.keysIn(req.files.files), (key) => {
