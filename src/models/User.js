@@ -104,16 +104,24 @@ userSchema.statics.updatePassword = async function (token, new_password) {
 };
 
 userSchema.statics.changePassword = async function (user, old_password, new_password) {
-  let old_pwd = await bcrypt.compare(old_password, user.password);
-  if (old_pwd) {
+  if (user.password) {
+    let old_pwd = await bcrypt.compare(old_password, user.password);
+    if (old_pwd) {
+      const salt = await bcrypt.genSalt();
+      const new_pwd = await bcrypt.hash(new_password, salt);
+      
+      await user.updateOne({ password: new_pwd });
+      return user;
+    }
+  
+    throw Error("invalid token");
+  } else {
     const salt = await bcrypt.genSalt();
     const new_pwd = await bcrypt.hash(new_password, salt);
     
     await user.updateOne({ password: new_pwd });
     return user;
   }
-
-  throw Error("invalid token");
 };
 
 userSchema.statics.currentUser = async function (id) {
