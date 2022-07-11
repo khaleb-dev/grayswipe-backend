@@ -14,6 +14,16 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const fetchProfile = async (req, res) => {
+  try {
+    const profile = await User.findOne({ _id: req.params.userId });
+    res.status(200).json(profile);
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "User not found" });
+  }
+};
+
 const changePassword = async (req, res) => {
   const { old_password, new_password } = req.body;
 
@@ -29,5 +39,6 @@ const changePassword = async (req, res) => {
 };
 
 module.exports = {
+  fetchProfile,
   changePassword
 };

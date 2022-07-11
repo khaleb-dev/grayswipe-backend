@@ -87,15 +87,15 @@ const requiresAuth = (req, res, next) => {
       jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
         if (err) {
           console.log(err);
-          return res.status(401).json({ error: "Unauthorized" });
+          return res.status(401).json({ error: "Session Expired" });
         } else {
           // make user available for the next middleware
           res.locals.user = decodedToken.data.id;
+          next();
         }
       });
     }
   }
-  next();
 };
 
 module.exports = {
