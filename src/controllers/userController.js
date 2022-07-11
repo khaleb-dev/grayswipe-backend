@@ -2,12 +2,36 @@ const User = require("../models/User");
 const { handleErrors } = require("../middlewares/errorHandler");
 
 const updateProfile = async (req, res) => {
-  const { emailOrPhoneNumber, password, remember_me } = req.body;
+  const {
+    first_name,
+    last_name,
+    phone_no,
+    display_name,
+    age,
+    gender,
+    city,
+    profile_photo,
+  } = req.body;
 
   try {
-    const user = await User.login(emailOrPhoneNumber, password);
+    const user = await User.findOneAndUpdate(
+      { _id: res.locals.user },
+      {
+        $set: {
+          first_name,
+          last_name,
+          phone_no,
+          display_name,
+          age,
+          gender,
+          city,
+          profile_photo,
+        },
+      },
+      { new: true }
+    );
 
-    res.status(200).json({ user, token });
+    res.status(200).json(user);
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
@@ -29,7 +53,7 @@ const changePassword = async (req, res) => {
 
   try {
     const user = await User.currentUser(res.locals.user);
-    const updated = await User.changePassword(user, old_password, new_password );
+    const updated = await User.changePassword(user, old_password, new_password);
 
     res.status(200).json({ status: "success" });
   } catch (err) {
@@ -49,7 +73,8 @@ const fetchProfiles = async (req, res) => {
 };
 
 module.exports = {
+  updateProfile,
   fetchProfile,
   changePassword,
-  fetchProfiles
+  fetchProfiles,
 };
