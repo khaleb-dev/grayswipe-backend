@@ -33,7 +33,7 @@ reviewSchema.methods.toJSON = function () {
   delete obj.__v;
   if (obj.user) {
     delete obj.user.password;
-    delete obj.user.auth_token;
+    delete obj.user.auth_id;
     delete obj.user.password_reset_token;
     delete obj.user.created_at;
     delete obj.user.updated_at;

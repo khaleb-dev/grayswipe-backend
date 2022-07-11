@@ -54,7 +54,7 @@ salonSchema.methods.toJSON = function () {
   delete obj.__v;
   if (obj.owner) {
     delete obj.owner.password;
-    delete obj.owner.auth_token;
+    delete obj.owner.auth_id;
     delete obj.owner.password_reset_token;
     delete obj.owner.created_at;
     delete obj.owner.updated_at;
