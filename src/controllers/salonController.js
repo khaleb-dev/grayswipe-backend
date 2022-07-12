@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Salon = require("../models/Salon");
+const Review = require("../models/Review");
 const { handleErrors } = require("../middlewares/errorHandler");
 
 const createSalon = async (req, res) => {
@@ -87,8 +88,12 @@ const updateSalon = async (req, res) => {
 
 const fetchOneSalon = async (req, res) => {
   try {
-    const salon = await Salon.findOne({ _id: req.params.salonId }).populate("owner");
-    res.status(200).json(salon);
+    const salon = await Salon.findOne({ _id: req.params.salonId }).populate(
+      "owner"
+    );
+    const reviews = await Review.countDocuments({ salon: salon });
+    const ratings = await Review.getTotalRatings(salon);
+    res.status(200).json({ salon, reviews, ratings: ratings[0].ratings });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error: "Salon not found" });

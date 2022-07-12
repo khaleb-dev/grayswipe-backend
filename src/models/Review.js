@@ -12,7 +12,7 @@ const reviewSchema = new mongoose.Schema(
       ref: "salon",
     },
     ratings: {
-      type: String,
+      type: Number,
     },
     details: {
       type: String,
@@ -27,6 +27,23 @@ const reviewSchema = new mongoose.Schema(
     },
   }
 );
+
+reviewSchema.statics.getTotalRatings = async function (salon) {
+  return await this.aggregate([
+    {
+      $match: {
+        salon: salon._id,
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        ratings: { $sum: "$ratings" },
+      },
+    },
+    { "$unset": ["_id"] },
+  ]);
+}
 
 reviewSchema.methods.toJSON = function () {
   var obj = this.toObject();
