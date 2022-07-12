@@ -12,6 +12,7 @@ const {
   fetchOneSalon,
   fetchAllSalons,
 } = require("../controllers/salonController");
+const { createSalonService, updateSalonService } = require("../controllers/salonServiceController");
 const {
   createReview,
   updateReview,
@@ -22,7 +23,12 @@ const {
   fetchAllReviewsBySalon,
 } = require("../controllers/reviewController");
 const { uploadFile, deleteFile } = require("../middlewares/fileHandler");
-const { updateProfile, fetchProfile, changePassword, fetchProfiles } = require("../controllers/userController");
+const {
+  updateProfile,
+  fetchProfile,
+  changePassword,
+  fetchProfiles,
+} = require("../controllers/userController");
 
 const router = Router();
 
@@ -37,6 +43,10 @@ router.post("/salon", requiresAuth, createSalon);
 router.patch("/salon/:salonId", requiresAuth, updateSalon);
 router.get("/salon/:salonId", fetchOneSalon);
 router.get("/salons", fetchAllSalons);
+
+// salon service
+router.post("/salon-service", requiresAuth, createSalonService);
+router.patch("/salon-service/:salonServiceId", requiresAuth, updateSalonService);
 
 // review
 router.post("/review", requiresAuth, createReview);

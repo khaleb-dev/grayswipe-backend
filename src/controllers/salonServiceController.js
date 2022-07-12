@@ -22,7 +22,27 @@ const createSalonService = async (req, res) => {
       return res.status(201).json(salon_service);
     }
 
-    return res.status(403).json({ error: "You are not permitted to perform this action." });
+    return res
+      .status(403)
+      .json({ error: "You are not permitted to perform this action." });
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error });
+  }
+};
+
+const updateSalonService = async (req, res) => {
+  const { name, price, discount, estimated_time, photo_urls } = req.body;
+  try {
+    const salon_service = await SalonService.findOneAndUpdate(
+      { _id: req.params.salonServiceId },
+      { $set: { name, price, discount, estimated_time, photo_urls } },
+      { new: true }
+    ).populate("salon");
+    if (salon_service) {
+      return res.status(200).json( salon_service );
+    }
+    res.status(400).json({ error: "Salon Service not found" });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error });
@@ -30,5 +50,6 @@ const createSalonService = async (req, res) => {
 };
 
 module.exports = {
-    createSalonService
-  };
+  createSalonService,
+  updateSalonService,
+};

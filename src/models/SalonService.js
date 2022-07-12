@@ -32,7 +32,7 @@ const salonServiceSchema = new mongoose.Schema(
   }
 );
 
-salon_serviceSchema.methods.toJSON = function () {
+salonServiceSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
   if (obj.salon) {
