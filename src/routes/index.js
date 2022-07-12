@@ -12,7 +12,7 @@ const {
   fetchOneSalon,
   fetchAllSalons,
 } = require("../controllers/salonController");
-const { createSalonService, updateSalonService } = require("../controllers/salonServiceController");
+const { createSalonService, updateSalonService, fetchOneSalonService } = require("../controllers/salonServiceController");
 const {
   createReview,
   updateReview,
@@ -47,6 +47,7 @@ router.get("/salons", fetchAllSalons);
 // salon service
 router.post("/salon-service", requiresAuth, createSalonService);
 router.patch("/salon-service/:salonServiceId", requiresAuth, updateSalonService);
+router.get("/salon-service/:salonServiceId", requiresAuth, fetchOneSalonService);
 
 // review
 router.post("/review", requiresAuth, createReview);

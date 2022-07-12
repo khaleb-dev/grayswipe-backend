@@ -9,7 +9,8 @@ const createSalonService = async (req, res) => {
   try {
     let user = await User.currentUser(res.locals.user);
     let salon = await Salon.findOne({ _id: salon_id });
-    if (user == salon.owner) {
+    console.log(user._id, salon.owner._id)
+    if (user._id.toString() == salon.owner._id.toString()) {
       const salon_service = await SalonService.create({
         salon,
         name,
@@ -49,7 +50,18 @@ const updateSalonService = async (req, res) => {
   }
 };
 
+const fetchOneSalonService = async (req, res) => {
+  try {
+    const salon_service = await SalonService.findOne({ _id: req.params.salonServiceId }).populate("salon"); 
+    res.status(200).json( salon_service );
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "Review not found" });
+  }
+};
+
 module.exports = {
   createSalonService,
   updateSalonService,
+  fetchOneSalonService
 };
