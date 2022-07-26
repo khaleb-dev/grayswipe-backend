@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       unique: [true, "Phone number already used by another user"],
     },
     password: {
-      type: String
+      type: String,
     },
     auth_id: {
       // for third party auth
@@ -59,9 +59,13 @@ userSchema.pre("save", async function (next) {
     const salt = await bcrypt.genSalt();
     if (this.password && this.password.length > 0) {
       this.password = await bcrypt.hash(this.password, salt);
+    } else {
+      this.password = "";
     }
     if (this.auth_id && this.auth_id.length > 0) {
       this.auth_id = await bcrypt.hash(this.auth_id, salt);
+    } else {
+      this.auth_id = "";
     }
     // set display name
     if (!this.display_name) {
@@ -79,10 +83,18 @@ userSchema.statics.login = async function (emailOrPhoneNumber, password) {
   });
   if (user) {
     console.log(user.password);
-    let pwd = await bcrypt.compare(password, user.password);
-    let aid = await bcrypt.compare(auth_id, user.auth_id);
-    if (pwd || aid) {
-      return user;
+    if (user.password && user.password.length > 0) {
+      const pwd = await bcrypt.compare(password, user.password);
+      if (pwd) {
+        return user;
+      }
+    }
+
+    if (user.auth_id && user.auth_id.length > 0) {
+      const aid = await bcrypt.compare(password, user.auth_id);
+      if (aid) {
+        return user;
+      }
     }
   }
 
@@ -104,22 +116,26 @@ userSchema.statics.updatePassword = async function (token, new_password) {
   throw Error("invalid token");
 };
 
-userSchema.statics.changePassword = async function (user, old_password, new_password) {
+userSchema.statics.changePassword = async function (
+  user,
+  old_password,
+  new_password
+) {
   if (user.password) {
     let old_pwd = await bcrypt.compare(old_password, user.password);
     if (old_pwd) {
       const salt = await bcrypt.genSalt();
       const new_pwd = await bcrypt.hash(new_password, salt);
-      
+
       await user.updateOne({ password: new_pwd });
       return user;
     }
-  
+
     throw Error("invalid token");
   } else {
     const salt = await bcrypt.genSalt();
     const new_pwd = await bcrypt.hash(new_password, salt);
-    
+
     await user.updateOne({ password: new_pwd });
     return user;
   }
