@@ -4,6 +4,7 @@ const {
   register,
   requestPasswordReset,
   setNewPassword,
+  regenerateToken,
   requiresAuth,
 } = require("../controllers/authController");
 const {
@@ -37,6 +38,7 @@ router.post("/authenticate", login);
 router.post("/register", register);
 router.post("/request-reset", requestPasswordReset);
 router.post("/reset-password", setNewPassword);
+router.get("/regenerate-token", requiresAuth, regenerateToken);
 
 // salon
 router.post("/salon", requiresAuth, createSalon);

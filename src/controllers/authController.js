@@ -78,6 +78,17 @@ const setNewPassword = async (req, res) => {
   }
 };
 
+const regenerateToken = async (req, res) => {
+  try {
+  const token = createToken({ id: res.locals.user, remember_me: res.locals.remember_me });
+
+  res.status(200).json({ token });
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error });
+  }
+};
+
 const requiresAuth = (req, res, next) => {
   if (!req.headers.authorization) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -91,6 +102,7 @@ const requiresAuth = (req, res, next) => {
         } else {
           // make user available for the next middleware
           res.locals.user = decodedToken.data.id;
+          res.locals.remember_me = decodedToken.data.id;
           next();
         }
       });
@@ -103,5 +115,6 @@ module.exports = {
   register,
   requestPasswordReset,
   setNewPassword,
+  regenerateToken,
   requiresAuth,
 };
