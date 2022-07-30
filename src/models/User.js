@@ -82,7 +82,6 @@ userSchema.statics.login = async function (emailOrPhoneNumber, password) {
     $or: [{ email: emailOrPhoneNumber }, { phone_no: emailOrPhoneNumber }],
   });
   if (user) {
-    console.log(user.password);
     if (user.password && user.password.length > 0) {
       const pwd = await bcrypt.compare(password, user.password);
       if (pwd) {
