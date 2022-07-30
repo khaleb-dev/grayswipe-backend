@@ -48,6 +48,6 @@ notificationSchema.methods.toJSON = function () {
   return obj;
 };
 
-const Notification = mongoose.model("notification", notificationSchema);
+const Notification = mongoose.model("notifications", notificationSchema);
 
 module.exports = Notification;

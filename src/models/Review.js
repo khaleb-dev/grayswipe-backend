@@ -9,7 +9,7 @@ const reviewSchema = new mongoose.Schema(
     },
     salon: {
       type: ObjectId,
-      ref: "salon",
+      ref: "salons",
     },
     ratings: {
       type: Number,

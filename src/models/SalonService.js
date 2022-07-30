@@ -5,7 +5,7 @@ const salonServiceSchema = new mongoose.Schema(
   {
     salon: {
       type: ObjectId,
-      ref: "salon",
+      ref: "salons",
     },
     name: {
       type: String,

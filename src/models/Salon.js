@@ -63,6 +63,6 @@ salonSchema.methods.toJSON = function () {
   return obj;
 };
 
-const Salon = mongoose.model("salon", salonSchema);
+const Salon = mongoose.model("salons", salonSchema);
 
 module.exports = Salon;
