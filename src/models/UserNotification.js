@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 
-const notificationSchema = new mongoose.Schema(
+const userNotificationSchema = new mongoose.Schema(
   {
     from_user: {
       type: ObjectId,
@@ -17,6 +17,9 @@ const notificationSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    seen: {
+      type: Boolean
+    },
   },
   {
     timestamps: {
@@ -26,7 +29,7 @@ const notificationSchema = new mongoose.Schema(
   }
 );
 
-notificationSchema.methods.toJSON = function () {
+userNotificationSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
   if (obj.from_user) {
@@ -48,6 +51,6 @@ notificationSchema.methods.toJSON = function () {
   return obj;
 };
 
-const Notification = mongoose.model("notifications", notificationSchema);
+const UserNotification = mongoose.model("user_notifications", userNotificationSchema);
 
-module.exports = Notification;
+module.exports = UserNotification;
