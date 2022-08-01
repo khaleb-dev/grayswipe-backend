@@ -71,6 +71,19 @@ const fetchAllNotificationsBySender = async (req, res) => {
   }
 };
 
+const fetchAllNotificationsByReceiver = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.userId });
+    const notifications = await UserNotification.find({
+      to_user: req.params.userId,
+    }).populate("from_user");
+    res.status(200).json({ user, notifications });
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "Notifications not found" });
+  }
+};
+
 module.exports = {
   readNotification,
   deleteNotification,
