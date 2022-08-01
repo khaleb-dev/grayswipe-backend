@@ -46,6 +46,18 @@ const fetchOneNotification = async (req, res) => {
   }
 };
 
+const fetchAllNotifications = async (req, res) => {
+  try {
+    const notifications = await UserNotification.find({})
+      .populate("from_user")
+      .populate("to_user");
+    res.status(200).json(notifications);
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "Notifications not found" });
+  }
+};
+
 module.exports = {
   readNotification,
   deleteNotification,
