@@ -18,6 +18,20 @@ const readNotification = async (req, res) => {
   }
 };
 
+const deleteNotification = async (req, res) => {
+  try {
+    const notification = await UserNotification.deleteOne({
+      _id: req.params.notificationId,
+    });
+    if (notification) {
+      res.status(200).json({ status: "success" });
+    }
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "An error occured" });
+  }
+};
+
 module.exports = {
   readNotification,
   deleteNotification,
