@@ -32,6 +32,20 @@ const deleteNotification = async (req, res) => {
   }
 };
 
+const fetchOneNotification = async (req, res) => {
+  try {
+    const notification = await UserNotification.findOne({
+      _id: req.params.notificationId,
+    })
+      .populate("from_user")
+      .populate("to_user");
+    res.status(200).json(notification);
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "Notification not found" });
+  }
+};
+
 module.exports = {
   readNotification,
   deleteNotification,
