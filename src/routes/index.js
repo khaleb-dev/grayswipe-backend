@@ -79,10 +79,10 @@ router.patch("/profile/change-password", requiresAuth, changePassword);
 router.get("/profile/:userId", requiresAuth, fetchProfile);
 
 // notifications
-router.patch("/notifications", requiresAuth, readNotification);
 router.get("/notifications", requiresAuth, fetchAllNotificationsByReceiver);
-router.get("/notifications/:notificationId", requiresAuth, fetchOneNotification);
-router.delete("/notifications/:notificationId", requiresAuth, deleteNotification);
+router.get("/notification/:notificationId", requiresAuth, fetchOneNotification);
+router.patch("/notification/:notificationId", requiresAuth, readNotification);
+router.delete("/notification/:notificationId", requiresAuth, deleteNotification);
 router.get("/notifications/sender/:userId", requiresAuth, fetchAllNotificationsBySender);
 router.get("/notifications/all", requiresAuth, fetchAllNotifications);
 

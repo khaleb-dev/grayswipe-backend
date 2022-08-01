@@ -5,7 +5,7 @@ const { handleErrors } = require("../middlewares/errorHandler");
 const readNotification = async (req, res) => {
   try {
     const notification = await UserNotification.findOneAndUpdate(
-      { _id: req.params.notificationId },
+      { _id: req.params.notificationId, to_user: res.locals.user },
       { $set: { seen: true } },
       { new: true }
     )
@@ -36,6 +36,7 @@ const fetchOneNotification = async (req, res) => {
   try {
     const notification = await UserNotification.findOne({
       _id: req.params.notificationId,
+      to_user: res.locals.user,
     })
       .populate("from_user")
       .populate("to_user");
@@ -62,7 +63,7 @@ const fetchAllNotificationsBySender = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.userId });
     const notifications = await UserNotification.find({
-      from_user: req.params.userId,
+      from_user: user._id,
     }).populate("to_user");
     res.status(200).json({ user, notifications });
   } catch (err) {
@@ -73,9 +74,8 @@ const fetchAllNotificationsBySender = async (req, res) => {
 
 const fetchAllNotificationsByReceiver = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.userId });
     const notifications = await UserNotification.find({
-      to_user: req.params.userId,
+      to_user: res.locals.user,
     }).populate("from_user");
     res.status(200).json({ user, notifications });
   } catch (err) {
