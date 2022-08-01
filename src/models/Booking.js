@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
+const randomString = require("random-id");
 
 const bookingSchema = new mongoose.Schema(
   {
@@ -21,11 +22,22 @@ const bookingSchema = new mongoose.Schema(
     discount: {
       type: Number,
     },
+    total_number: {
+      type: Number,
+      default: 1,
+    },
+    total_amount: {
+      type: Number,
+    },
+    comment: {
+      type: String,
+    },
     date_time: {
       type: String,
     },
-    time: {
+    code: {
       type: String,
+      unique: [true, "Duplicate booking code found."],
     },
   },
   {
@@ -36,11 +48,16 @@ const bookingSchema = new mongoose.Schema(
   }
 );
 
+bookingSchema.pre("save", async function (next) {
+  this.code = randomString(8, "aA0");
+  next();
+});
+
 bookingSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
   if (obj.customer) {
-    delete obj.customercustomer.password;
+    delete obj.customer.password;
     delete obj.customer.auth_id;
     delete obj.customer.password_reset_token;
     delete obj.customer.created_at;
