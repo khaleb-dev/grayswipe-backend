@@ -17,8 +17,12 @@ const userNotificationSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    url: {
+      type: String,
+    },
     seen: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
   },
   {
