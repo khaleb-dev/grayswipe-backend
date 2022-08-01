@@ -1,0 +1,28 @@
+const User = require("../models/User");
+const UserNotification = require("../models/UserNotification");
+const { handleErrors } = require("../middlewares/errorHandler");
+
+const readNotification = async (req, res) => {
+  try {
+    const notification = await UserNotification.findOneAndUpdate(
+      { _id: req.params.notificationId },
+      { $set: { seen: true } },
+      { new: true }
+    )
+      .populate("from_user")
+      .populate("to_user");
+    return res.status(200).json(notification);
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error });
+  }
+};
+
+module.exports = {
+  readNotification,
+  deleteNotification,
+  fetchOneNotification,
+  fetchAllNotifications,
+  fetchAllNotificationsBySender,
+  fetchAllNotificationsByReceiver,
+};

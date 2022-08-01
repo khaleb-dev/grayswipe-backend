@@ -30,6 +30,14 @@ const {
   changePassword,
   fetchProfiles,
 } = require("../controllers/userController");
+const {
+  readNotification,
+  deleteNotification,
+  fetchOneNotification,
+  fetchAllNotifications,
+  fetchAllNotificationsBySender,
+  fetchAllNotificationsByReceiver,
+} = require("../controllers/notificationController");
 
 const router = Router();
 
@@ -69,5 +77,13 @@ router.get("/profiles", requiresAuth, fetchProfiles);
 router.patch("/profile", requiresAuth, updateProfile);
 router.patch("/profile/change-password", requiresAuth, changePassword);
 router.get("/profile/:userId", requiresAuth, fetchProfile);
+
+// notifications
+router.patch("/notifications", requiresAuth, readNotification);
+router.get("/notifications", requiresAuth, fetchAllNotificationsByReceiver);
+router.get("/notifications/:notificationId", requiresAuth, fetchOneNotification);
+router.delete("/notifications/:notificationId", requiresAuth, deleteNotification);
+router.get("/notifications/sender/:userId", requiresAuth, fetchAllNotificationsBySender);
+router.get("/notifications/all", requiresAuth, fetchAllNotifications);
 
 module.exports = router;
