@@ -37,7 +37,8 @@ const {
 const {
   createBooking,
   deleteBooking,
-  fetchAllBookings
+  fetchAllBookings,
+  fetchAllBookingsBySalon,
 } = require("../controllers/bookingsController");
 const {
   readNotification,
@@ -88,8 +89,9 @@ router.patch("/profile/change-password", requiresAuth, changePassword);
 router.get("/profile/:userId", requiresAuth, fetchProfile);
 
 // bookings
-router.get("/bookings/:salonId", requiresAuth, fetchAllBookings);
-router.get("/bookings/:salonId", requiresAuth, fetchAllBookings);
+router.post("/bookings", requiresAuth, createBooking);
+router.get("/bookings", requiresAuth, fetchAllBookings);
+router.get("/bookings/:salonId", requiresAuth, fetchAllBookingsBySalon);
 router.delete("/bookings/:bookingId", requiresAuth, deleteBooking);
 
 // notifications
