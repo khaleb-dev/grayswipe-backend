@@ -39,6 +39,7 @@ const {
   deleteBooking,
   fetchAllBookings,
   fetchAllBookingsBySalon,
+  updateBooking
 } = require("../controllers/bookingsController");
 const {
   readNotification,
@@ -92,6 +93,7 @@ router.get("/profile/:userId", requiresAuth, fetchProfile);
 router.post("/bookings", requiresAuth, createBooking);
 router.get("/bookings", requiresAuth, fetchAllBookings);
 router.get("/bookings/:salonId", requiresAuth, fetchAllBookingsBySalon);
+router.patch("/bookings/:bookingId", requiresAuth, updateBooking);
 router.delete("/bookings/:bookingId", requiresAuth, deleteBooking);
 
 // notifications

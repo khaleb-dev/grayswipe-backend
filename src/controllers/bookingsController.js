@@ -36,7 +36,7 @@ const createBooking = async (req, res) => {
           url: `${process.env.BASE_URL}/bookings/${booking._id}`,
         });
       }
-      res.status(201).json(booking);
+      return res.status(201).json(booking);
     }
     return res.status(400).json({ error: "Service not found!" });
   } catch (err) {
@@ -84,6 +84,33 @@ const fetchAllBookingsBySalon = async (req, res) => {
     res.status(400).json({ error });
   }
 };
+
+const updateBooking = async (req, res) => {
+  const { total_number, comment, date_time } = req.body;
+  try {
+    const booking = await Booking.findOneAndUpdate(
+      { _id: req.params.bookingId, customer: res.locals.user },
+      { $set: req.body },
+      { new: true }
+    );
+    if (booking) {
+      // send notification to salon owner
+      const title = `${salon.name} got a new booking.`;
+      const description = `A customer has booked ${service.name} service by ${date_time}`;
+      const user_notification = await UserNotification.create({
+        from_user: user,
+        to_user: salon.owner,
+        title,
+        description,
+        url: `${process.env.BASE_URL}/bookings/${booking._id}`,
+      });
+      return res.status(200).json(booking);
+    }
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error });
+  }
+}
 
 module.exports = {
   createBooking,

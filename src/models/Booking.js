@@ -39,6 +39,10 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       unique: [true, "Duplicate booking code found."],
     },
+    waiting: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: {
@@ -50,6 +54,7 @@ const bookingSchema = new mongoose.Schema(
 
 bookingSchema.pre("save", async function (next) {
   this.code = randomString(8, "aA0");
+  this.waiting = true;
   next();
 });
 
