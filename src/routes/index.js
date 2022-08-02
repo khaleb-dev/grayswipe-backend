@@ -13,7 +13,11 @@ const {
   fetchOneSalon,
   fetchAllSalons,
 } = require("../controllers/salonController");
-const { createSalonService, updateSalonService, fetchOneSalonService } = require("../controllers/salonServiceController");
+const {
+  createSalonService,
+  updateSalonService,
+  fetchOneSalonService,
+} = require("../controllers/salonServiceController");
 const {
   createReview,
   updateReview,
@@ -30,6 +34,11 @@ const {
   changePassword,
   fetchProfiles,
 } = require("../controllers/userController");
+const {
+  createBooking,
+  deleteBooking,
+  fetchAllBookings
+} = require("../controllers/bookingsController");
 const {
   readNotification,
   deleteNotification,
@@ -77,6 +86,11 @@ router.get("/profiles", requiresAuth, fetchProfiles);
 router.patch("/profile", requiresAuth, updateProfile);
 router.patch("/profile/change-password", requiresAuth, changePassword);
 router.get("/profile/:userId", requiresAuth, fetchProfile);
+
+// bookings
+router.get("/bookings/:salonId", requiresAuth, fetchAllBookings);
+router.get("/bookings/:salonId", requiresAuth, fetchAllBookings);
+router.delete("/bookings/:bookingId", requiresAuth, deleteBooking);
 
 // notifications
 router.get("/notifications", requiresAuth, fetchAllNotificationsByReceiver);

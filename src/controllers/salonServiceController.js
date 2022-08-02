@@ -9,7 +9,6 @@ const createSalonService = async (req, res) => {
   try {
     let user = await User.currentUser(res.locals.user);
     let salon = await Salon.findOne({ _id: salon_id });
-    console.log(user._id, salon.owner._id)
     if (user._id.toString() == salon.owner._id.toString()) {
       const salon_service = await SalonService.create({
         salon,
