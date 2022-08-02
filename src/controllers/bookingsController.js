@@ -117,4 +117,5 @@ module.exports = {
   deleteBooking,
   fetchAllBookings,
   fetchAllBookingsBySalon,
+  updateBooking
 };
