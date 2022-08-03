@@ -46,13 +46,11 @@ app.use("/api", (req, res) => {
 });
 
 app.use((req, res) => {
-  res
-    .status(404)
-    .json({
-      name: "GraySwipe RESTful API",
-      version: "1.0.0",
-      status: "200: OK",
-      health: "RUNNING",
-      mode: "STAGING",
-    });
+  res.status(404).json({
+    name: "GraySwipe RESTful API",
+    version: "1.0.0",
+    status: "200: OK",
+    health: "RUNNING",
+    mode: "STAGING",
+  });
 });

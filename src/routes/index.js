@@ -33,6 +33,7 @@ const {
   fetchProfile,
   changePassword,
   fetchProfiles,
+  fetchProfileSalons,
 } = require("../controllers/userController");
 const {
   createBooking,
@@ -88,6 +89,7 @@ router.get("/profiles", requiresAuth, fetchProfiles);
 router.patch("/profile", requiresAuth, updateProfile);
 router.patch("/profile/change-password", requiresAuth, changePassword);
 router.get("/profile/:userId", requiresAuth, fetchProfile);
+router.get("/profile/:userId/salons", requiresAuth, fetchProfileSalons);
 
 // bookings
 router.post("/bookings", requiresAuth, createBooking);

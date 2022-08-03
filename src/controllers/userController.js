@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Salon = require("../models/Salon");
 const { handleErrors } = require("../middlewares/errorHandler");
 
 const updateProfile = async (req, res) => {
@@ -72,9 +73,26 @@ const fetchProfiles = async (req, res) => {
   }
 };
 
+const fetchProfileSalons = async (req, res) => {
+  try {
+    const profile = await User.findOne({ _id: req.params.userId });
+    if (profile) {
+      const salons = await Salon.find({
+        owner: profile,
+      });
+      return res.status(200).json(salons);
+    }
+    res.status(400).json({ error: "Invalid request" });
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error: "User not found" });
+  }
+};
+
 module.exports = {
   updateProfile,
   fetchProfile,
   changePassword,
   fetchProfiles,
+  fetchProfileSalons,
 };
