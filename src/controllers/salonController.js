@@ -15,6 +15,8 @@ const createSalon = async (req, res) => {
     city,
     street,
     postcode,
+    opening_time,
+    closing_time,
     location,
     photo_urls,
   } = req.body;
@@ -32,6 +34,8 @@ const createSalon = async (req, res) => {
       city,
       street,
       postcode,
+      opening_time,
+      closing_time,
       location,
       photo_urls,
     });
@@ -54,6 +58,8 @@ const updateSalon = async (req, res) => {
     city,
     street,
     postcode,
+    opening_time,
+    closing_time,
     location,
     photo_urls,
   } = req.body;
@@ -71,6 +77,8 @@ const updateSalon = async (req, res) => {
           city,
           street,
           postcode,
+          opening_time,
+          closing_time,
           location,
           photo_urls,
         },

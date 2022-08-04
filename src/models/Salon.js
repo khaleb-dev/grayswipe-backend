@@ -34,6 +34,12 @@ const salonSchema = new mongoose.Schema(
     postcode: {
       type: String,
     },
+    opening_time: {
+      type: String,
+    },
+    closing_time: {
+      type: String,
+    },
     location: {
       type: Object,
     },
