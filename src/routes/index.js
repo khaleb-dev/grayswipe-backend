@@ -17,6 +17,7 @@ const {
   createSalonService,
   updateSalonService,
   fetchOneSalonService,
+  softDeleteSalonService,
 } = require("../controllers/salonServiceController");
 const {
   createReview,
@@ -70,6 +71,7 @@ router.get("/salons", fetchAllSalons);
 router.post("/salon-service", requiresAuth, createSalonService);
 router.patch("/salon-service/:salonServiceId", requiresAuth, updateSalonService);
 router.get("/salon-service/:salonServiceId", requiresAuth, fetchOneSalonService);
+router.delete("/salon-service/:salonServiceId", requiresAuth, softDeleteSalonService);
 
 // review
 router.post("/review", requiresAuth, createReview);

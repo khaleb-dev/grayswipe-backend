@@ -59,8 +59,26 @@ const fetchOneSalonService = async (req, res) => {
   }
 };
 
+const softDeleteSalonService = async (req, res) => {
+  try {
+    const salon_service = await SalonService.findOneAndUpdate(
+      { _id: req.params.salonServiceId },
+      { $set: { is_deleted: true, deletedAt: new Date()  } },
+      { new: true }
+    );
+    if (salon_service) {
+      return res.status(200).json({ messgae: "Salon Service deleted successfully." });
+    }
+    res.status(400).json({ error: "Salon Service not found" });
+  } catch (err) {
+    const error = handleErrors(err);
+    res.status(400).json({ error });
+  }
+};
+
 module.exports = {
   createSalonService,
   updateSalonService,
-  fetchOneSalonService
+  fetchOneSalonService,
+  softDeleteSalonService,
 };

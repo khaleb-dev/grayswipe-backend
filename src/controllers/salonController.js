@@ -102,7 +102,7 @@ const fetchOneSalon = async (req, res) => {
     );
     const reviews = await Review.countDocuments({ salon: salon });
     const ratings = await Review.getTotalRatings(salon);
-    const salon_services = await SalonService.find({ salon: salon });
+    const salon_services = await SalonService.find({ salon: salon, is_deleted: false });
 
     res.status(200).json({ salon, reviews, ratings: ratings[0].ratings, salon_services });
   } catch (err) {

@@ -24,6 +24,14 @@ const salonServiceSchema = new mongoose.Schema(
     photo_urls: {
       type: Array,
     },
+    is_deleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: {
@@ -36,6 +44,8 @@ const salonServiceSchema = new mongoose.Schema(
 salonServiceSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
+  delete obj.deletedAt;
+  delete obj.is_deleted;
   if (obj.salon) {
     delete obj.salon.__v;
   }
