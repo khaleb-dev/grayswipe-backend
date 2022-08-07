@@ -35,7 +35,7 @@ const updateSalonService = async (req, res) => {
   const { name, price, discount, estimated_time, photo_urls } = req.body;
   try {
     const salon_service = await SalonService.findOneAndUpdate(
-      { _id: req.params.salonServiceId },
+      { _id: req.params.salonServiceId, is_deleted: false },
       { $set: { name, price, discount, estimated_time, photo_urls } },
       { new: true }
     ).populate("salon");
@@ -51,7 +51,7 @@ const updateSalonService = async (req, res) => {
 
 const fetchOneSalonService = async (req, res) => {
   try {
-    const salon_service = await SalonService.findOne({ _id: req.params.salonServiceId }).populate("salon"); 
+    const salon_service = await SalonService.findOne({ _id: req.params.salonServiceId, is_deleted: false }).populate("salon"); 
     res.status(200).json( salon_service );
   } catch (err) {
     const error = handleErrors(err);
