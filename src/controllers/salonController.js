@@ -101,10 +101,14 @@ const fetchOneSalon = async (req, res) => {
       "owner"
     );
     const reviews = await Review.countDocuments({ salon: salon });
-    const ratings = await Review.getTotalRatings(salon);
+    let ratings = await Review.getTotalRatings(salon);
     const salon_services = await SalonService.find({ salon: salon, is_deleted: false });
-
-    res.status(200).json({ salon, reviews, ratings: ratings[0].ratings, salon_services });
+    if (ratings.length > 0) {
+      ratings = ratings[0].ratings;
+    } else {
+      ratings = 0;
+    }
+    res.status(200).json({ salon, reviews, ratings: ratings, salon_services });
   } catch (err) {
     const error = handleErrors(err);
     res.status(400).json({ error: "Salon not found" });
